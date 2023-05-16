@@ -44,8 +44,12 @@ pub use secrecy::Secret;
 #[cfg(feature = "tracing")]
 use tracing::instrument;
 
+pub use async_mailer_core::mail_send;
+pub use async_mailer_core::mail_send::mail_builder;
+
 pub use async_mailer_core::mail_send::mail_builder::MessageBuilder;
 pub use async_mailer_core::mail_send::smtp::message::Message;
+
 pub use async_mailer_core::Mailer;
 
 #[cfg(feature = "outlook")]
