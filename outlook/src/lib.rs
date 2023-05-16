@@ -174,7 +174,7 @@ impl Mailer for OutlookMailer {
             .await
             .map_err(OutlookMailerError::SendMailRequest)?;
 
-        let success = {
+        {
             // Get result with empty ok or status code error
             // before moving `response` to consume the body.
             let success = response
@@ -212,9 +212,7 @@ impl Mailer for OutlookMailer {
 
             success
         }
-        .map_err(OutlookMailerError::SendMailResponse);
-
-        success?;
+        .map_err(OutlookMailerError::SendMailResponse)?;
 
         Ok(())
     }
