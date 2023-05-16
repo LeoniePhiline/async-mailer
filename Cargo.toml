@@ -5,7 +5,7 @@ name = "async-mailer"
 description = "An async `dyn Mailer` trait with runtime-pluggable Outlook (Office365) and SMTP implementations."
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 [features]

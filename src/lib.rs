@@ -90,7 +90,7 @@ pub enum MailerConfiguration {
 
 /// Create a new dynamic mailer trait object depending on the provided [`MailerConfiguration`].
 #[cfg_attr(feature = "tracing", instrument)]
-pub async fn new_mailer<M: Mailer>(
+pub async fn new_mailer(
     mailer_configuration: MailerConfiguration,
 ) -> Result<Arc<dyn Mailer>, MailerError> {
     match mailer_configuration {
