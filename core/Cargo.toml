@@ -1,5 +1,7 @@
 [package]
 name = "async-mailer-core"
+description = "Internal core crate for `async-mailer`."
+license = "MPL-2.0"
 version = "0.1.0"
 edition = "2021"
 
