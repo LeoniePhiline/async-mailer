@@ -6,7 +6,7 @@ description = "An async `dyn Mailer` trait with runtime-pluggable Outlook (Offic
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer"
 documentation = "https://docs.rs/async-mailer/"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 
 [features]
