@@ -2,6 +2,7 @@
 name = "async-mailer-outlook"
 description = "Async Outlook (Office365) mailer implementation, intended to be used as `async-mailer` Mailer trait object."
 license = "MPL-2.0"
+repository = "https://github.com/LeoniePhiline/async-mailer"
 version = "0.1.0"
 edition = "2021"
 
