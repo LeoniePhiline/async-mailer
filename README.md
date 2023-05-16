@@ -4,25 +4,28 @@ An async dyn Mailer trait with runtime-pluggable Outlook (Office365) and SMTP im
 ## Example:
 
 ```rust
-// Outlook configuration, e.g. from command line arguments or environment variables.
-let mailer_configuration = MailerConfiguration::Outlook {
-    tenant: "<Microsoft Identity service tenant>",
-    app_guid: "<OAuth2 app GUID>",
-    secret: "<OAuth2 app secret>"
-};
-
-// Alternative: SMTP configuration, e.g. from command line arguments or environment variables.
-let mailer_configuration = MailerConfiguration::Outlook {
-    host: "smtp.example.com",
-    port: 465,
-    invalid_certs: SmtpInvalidCertsPolicy::Deny,
-    user: "<username>",
-    password: "<password>"
-};
-
 // Create a `Box<dyn Mailer>`.
-// The implementation is `Send` and `Sync` and may be store e.g. as part of your server state.
-let mailer = new_mailer(mailer_configuration).await?;
+//
+// Alternative implementations can be used.
+
+let mailer = OutlookMailer::new(
+    "<Microsoft Identity service tenant>",
+    "<OAuth2 app GUID>",
+    "<OAuth2 app secret>"
+).await?;
+
+// Alternative:
+let mailer = SmtpMailer::new(
+    "smtp.example.com",
+    465,
+    SmtpInvalidCertsPolicy::Deny,
+    "<username>",
+    "<password>"
+);
+
+// Further alternative mailers can be implemented by third parties.
+
+// The trait object is `Send` and `Sync` and may be stored e.g. as part of your server state.
 
 // Build a message using the re-exported `mail_builder::MessageBuilder'.
 // For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
@@ -41,4 +44,3 @@ mailer.send_mail(&message).await?;
 DKIM support is planned to be implemented on the `SmtpMailer`.
 
 Further mailer implementations are possible. Please open an issue and ideally provide a pull request to add your alternative mailer implementation!
-

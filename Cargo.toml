@@ -12,11 +12,10 @@ edition = "2021"
 default = ["outlook", "smtp", "tracing"]
 outlook = ["dep:async-mailer-outlook"]
 smtp = ["dep:async-mailer-smtp"]
-tracing = ["dep:tracing", "async-mailer-core/tracing", "async-mailer-outlook?/tracing", "async-mailer-smtp?/tracing"]
+tracing = ["async-mailer-core/tracing", "async-mailer-outlook?/tracing", "async-mailer-smtp?/tracing"]
 
 [dependencies]
 async-mailer-core = { path = "core", version = "0.1" }
 async-mailer-outlook = { optional = true, path = "outlook", version = "0.1" }
 async-mailer-smtp = { optional = true, path = "smtp", version = "0.1" }
 secrecy = "0.8.0"
-tracing = { optional = true, version = "0.1.37" }
