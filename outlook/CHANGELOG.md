@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+## [0.2.1] - 2023-05-30
+
+### Fixed
+
+- Fix doctests.
+
 ## [0.2.0] - 2023-05-30
 
 ### BREAKING CHANGES
@@ -40,7 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.2.0...HEAD
+[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.2.1...HEAD
+[0.2.1]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.2.0...async-mailer-outlook-v0.2.1
 [0.2.0]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.1.2...async-mailer-outlook-v0.2.0
 [0.1.2]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.1.1...async-mailer-outlook-v0.1.2
 [0.1.1]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.1.0...async-mailer-outlook-v0.1.1
