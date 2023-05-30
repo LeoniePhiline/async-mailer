@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### Fixed
+
+- Re-export traits and type definitions from `async-mailer-core`.
+
 ## [0.3.0] - 2023-05-30
 
 ### BREAKING CHANGES
