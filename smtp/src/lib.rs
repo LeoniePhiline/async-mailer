@@ -4,25 +4,82 @@
 //! If you are planning to always use `SmtpMailer` and do not need `async_mailer_outlook::OutlookMailer`
 //! or `async_mailer::BoxMailer`, then consider using the `mail_send` crate directly.
 //!
-//! Example:
+//! # Examples
+//!
+//! ## Using the strongly typed `Mailer`:
+//!
 //! ```no_run
-//! // Use `new` for a strongly typed mailer instance,
-//! // or `new_box` / `new_arc` for a type-erased dynamic mailer.
+//! # async fn test() -> Result<(), Box<dyn std::error::Error>> {
+//! // Create an `impl Mailer`.
+//! //
+//! // Alternative implementations can be used.
+//!
+//! # use async_mailer_smtp::{ SmtpMailer, SmtpInvalidCertsPolicy };
 //! let mailer = SmtpMailer::new(
-//!     "smtp.example.com",
+//!     "smtp.example.com".into(),
 //!     465,
 //!     SmtpInvalidCertsPolicy::Deny,
-//!     "<username>",
-//!     "<password>"
-//! ).await?;
+//!     "<username>".into(),
+//!     secrecy::Secret::new("<password>".into())
+//! );
 //!
-//! let message = MessageBuilder::new()
+//! // An alternative `OutlookMailer` can be found at `async-mailer-outlook`.
+//! // Further alternative mailers can be implemented by third parties.
+//!
+//! // Build a message using the re-exported `mail_builder::MessageBuilder'.
+//! // For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
+//! # use async_mailer_core::mail_send::smtp::message::IntoMessage;
+//! let message = async_mailer_core::mail_send::mail_builder::MessageBuilder::new()
 //!     .from(("From Name", "from@example.com"))
 //!     .to("to@example.com")
 //!     .subject("Subject")
-//!     .text_body("Mail body");
+//!     .text_body("Mail body")
+//!     .into_message()?;
 //!
-//! mailer.send_mail(&message).await?;
+//! // Send the message using the strongly typed `Mailer`.
+//! # use async_mailer_core::Mailer;
+//! mailer.send_mail(message).await?;
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! ## Using the dynamically typed `DynMailer`:
+//!
+//! ```no_run
+//! # async fn test() -> Result<(), async_mailer_core::DynMailerError> {
+//! // Create a `BoxMailer`.
+//! //
+//! // Alternative implementations can be used.
+//!
+//! # use async_mailer_core::BoxMailer;
+//! # use async_mailer_smtp::{ SmtpMailer, SmtpInvalidCertsPolicy };
+//! let mailer: BoxMailer = SmtpMailer::new_box( // Or `new_arc` to use in e.g. globally shared server state.
+//!     "smtp.example.com".into(),
+//!     465,
+//!     SmtpInvalidCertsPolicy::Deny,
+//!     "<username>".into(),
+//!     secrecy::Secret::new("<password>".into())
+//! );
+//!
+//! // An alternative `OutlookMailer` can be found at `async-mailer-outlook`.
+//! // Further alternative mailers can be implemented by third parties.
+//!
+//! // The trait object is `Send` and `Sync` and may be stored e.g. as part of your server state.
+//!
+//! // Build a message using the re-exported `mail_builder::MessageBuilder'.
+//! // For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
+//! # use async_mailer_core::mail_send::smtp::message::IntoMessage;
+//! let message = async_mailer_core::mail_send::mail_builder::MessageBuilder::new()
+//!     .from(("From Name", "from@example.com"))
+//!     .to("to@example.com")
+//!     .subject("Subject")
+//!     .text_body("Mail body")
+//!     .into_message()?;
+//!
+//! // Send the message using the implementation-agnostic `dyn DynMailer`.
+//! mailer.send_mail(message).await?;
+//! # Ok(())
+//! # }
 //! ```
 
 use std::sync::Arc;
