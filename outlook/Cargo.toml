@@ -1,6 +1,6 @@
 [package]
 name = "async-mailer-outlook"
-description = "Async Outlook (Office365) mailer implementation, intended to be used as `async-mailer` Mailer trait object."
+description = "Async Outlook (Office365) mailer implementation, intended to be used as `async-mailer` generic `Mailer` or `DynMailer` trait object."
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer/outlook"
 documentation = "https://docs.rs/async-mailer-outlook/"
@@ -12,7 +12,7 @@ default = ["tracing"]
 tracing = ["dep:tracing"]
 
 [dependencies]
-async-mailer-core = { path = "../core", version = "0.1" }
+async-mailer-core = { path = "../core", version = "0.2" }
 async-trait = "0.1.68"
 base64 = "0.21.0"
 reqwest = { version = "0.11.17", features = ["rustls", "rustls-tls", "gzip", "brotli"], default-features = false }
