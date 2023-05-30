@@ -1,6 +1,17 @@
 # async-mailer
 A set of async generic `Mailer` and dynamic `dyn DynMailer` traits with runtime-pluggable Outlook (Office365) and SMTP implementations.
 
+## Installation
+
+Add to your `Cargo.toml`:
+
+```toml
+async-mailer = "0.3.0"
+```
+
+By default, features `smtp`, `outlook` and `tracing` are enabled.
+Use `default-features = false` and `features = [...]` to select features individually.
+
 ## Example:
 
 ```rust
