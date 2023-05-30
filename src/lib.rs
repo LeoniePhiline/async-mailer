@@ -2,7 +2,9 @@
 //!
 //! Microsoft Outlook and SMTP mailer variants are available.
 //!
-//! # Using the strongly typed `async_mailer::Mailer`:
+//! # Examples
+//!
+//! ## Using the strongly typed `Mailer`:
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), Box<dyn std::error::Error>> {
@@ -44,7 +46,7 @@
 //! # }
 //! ```
 //!
-//! # Using the dynamically typed `async_mailer::DynMailer`:
+//! ## Using the dynamically typed `DynMailer`:
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), async_mailer::DynMailerError> {
