@@ -46,11 +46,11 @@ pub use async_mailer_core::mail_send::mail_builder;
 pub use async_mailer_core::mail_send::mail_builder::MessageBuilder;
 pub use async_mailer_core::mail_send::smtp::message::Message;
 
+// == Mailer ==
 pub use async_mailer_core::Mailer;
 
-pub use async_mailer_core::ArcMailer;
-pub use async_mailer_core::BoxMailer;
-pub use async_mailer_core::DynMailer;
+// == DynMailer ==
+pub use async_mailer_core::{ArcMailer, BoxMailer, DynMailer, DynMailerError};
 
 #[cfg(feature = "outlook")]
 pub use async_mailer_outlook::*;
