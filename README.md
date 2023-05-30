@@ -1,21 +1,23 @@
 # async-mailer
-An async dyn Mailer trait with runtime-pluggable Outlook (Office365) and SMTP implementations.
+A set of async generic `Mailer` and dynamic `dyn DynMailer` traits with runtime-pluggable Outlook (Office365) and SMTP implementations.
 
 ## Example:
 
 ```rust
-// Create a `Box<dyn Mailer>`.
-//
-// Alternative implementations can be used.
+// Use `new` for a strongly typed mailer instance,
+// or `new_box` / `new_arc` for a type-erased dynamic mailer.
 
-let mailer = OutlookMailer::new(
+// Create a `BoxMailer` - alias for `Box<dyn DynMailer>`.
+let mailer: BoxMailer = OutlookMailer::new_box(
     "<Microsoft Identity service tenant>",
     "<OAuth2 app GUID>",
     "<OAuth2 app secret>"
 ).await?;
 
+// Alternative implementations can be used.
+
 // Alternative:
-let mailer = SmtpMailer::new(
+let mailer: BoxMailer = SmtpMailer::new_box(
     "smtp.example.com",
     465,
     SmtpInvalidCertsPolicy::Deny,
@@ -35,12 +37,13 @@ let message = MessageBuilder::new()
     .subject("Subject")
     .text_body("Mail body");
 
-// Send the message using the implementation-agnostic `dyn Mailer`.
+// Send the message using the implementation-agnostic `dyn DynMailer`.
 mailer.send_mail(&message).await?;
 ```
 
 ## Roadmap
 
-DKIM support is planned to be implemented on the `SmtpMailer`.
+- DKIM support is planned to be implemented on the `SmtpMailer`.
+- Access token auto-refresh is planned to be implemented on the `OutlookMailer`.
 
 Further mailer implementations are possible. Please open an issue and ideally provide a pull request to add your alternative mailer implementation!

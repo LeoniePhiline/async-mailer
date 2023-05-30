@@ -5,7 +5,7 @@
 //! Example:
 //!
 //! ```no_run
-//! // Create a `Box<dyn Mailer>`.
+//! // Create a `BoxMailer`.
 //! //
 //! // Alternative implementations can be used.
 //!
@@ -34,7 +34,7 @@
 //!     .subject("Subject")
 //!     .text_body("Mail body");
 //!
-//! // Send the message using the implementation-agnostic `dyn Mailer`.
+//! // Send the message using the implementation-agnostic `dyn DynMailer`.
 //! mailer.send_mail(&message).await?;
 //! ```
 
@@ -46,7 +46,7 @@ pub use async_mailer_core::mail_send::mail_builder;
 pub use async_mailer_core::mail_send::mail_builder::MessageBuilder;
 pub use async_mailer_core::mail_send::smtp::message::Message;
 
-pub use async_mailer_core::Mailer;
+pub use async_mailer_core::DynMailer;
 
 #[cfg(feature = "outlook")]
 pub use async_mailer_outlook::*;
