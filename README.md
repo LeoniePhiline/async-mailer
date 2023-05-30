@@ -1,6 +1,11 @@
 # async-mailer
 A set of async generic `Mailer` and dynamic `dyn DynMailer` traits with runtime-pluggable Outlook (Office365) and SMTP implementations.
 
+
+[![Crates.io](https://img.shields.io/crates/v/async-mailer)](https://crates.io/crates/async-mailer)
+[![Documentation](https://docs.rs/async-mailer/badge.svg)][docs]
+[![Dependency status](https://deps.rs/repo/github/LeoniePhiline/async-mailer/status.svg)](https://deps.rs/repo/github/LeoniePhiline/async-mailer)
+
 ## Installation
 
 Add to your `Cargo.toml`:
@@ -19,7 +24,7 @@ or `new_box` / `new_arc` for a type-erased dynamic mailer.
 
 Microsoft Outlook and SMTP mailer variants are available.
 
-# Using the strongly typed `async_mailer::Mailer`:
+# Using the strongly typed `Mailer`:
 
 ```rust
 // Create an `impl Mailer`.
@@ -58,7 +63,7 @@ use async_mailer::Mailer;
 mailer.send_mail(message).await?;
 ```
 
-# Using the dynamically typed `async_mailer::DynMailer`:
+# Using the dynamically typed `dyn DynMailer` / `BoxMailer` / `ArcMailer`:
 
 ```rust
 // Create a `BoxMailer`.
@@ -105,3 +110,5 @@ mailer.send_mail(message).await?;
 - Access token auto-refresh is planned to be implemented on the `OutlookMailer`.
 
 Further mailer implementations are possible. Please open an issue and ideally provide a pull request to add your alternative mailer implementation!
+
+[docs]: https://docs.rs/async-mailer
