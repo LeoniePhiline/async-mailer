@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+## [0.2.0] - 2023-05-30
+
 ### BREAKING CHANGES
 
 - Dependency `async-mailer` (`async-mailer-core`) renames type-erased, object safe `trait Mailer` to `trait DynMailer`.
@@ -38,7 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.1.2...HEAD
+[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.2.0...HEAD
+[0.2.0]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.1.2...async-mailer-outlook-v0.2.0
 [0.1.2]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.1.1...async-mailer-outlook-v0.1.2
 [0.1.1]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.1.0...async-mailer-outlook-v0.1.1
 [0.1.0]: https://github.com/LeoniePhiline/async-mailer/releases/tag/async-mailer-outlook-v0.1.0
