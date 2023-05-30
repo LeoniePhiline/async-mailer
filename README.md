@@ -6,7 +6,7 @@ A set of async generic `Mailer` and dynamic `dyn DynMailer` traits with runtime-
 Add to your `Cargo.toml`:
 
 ```toml
-async-mailer = "0.3.0"
+async-mailer = "0.3.1"
 ```
 
 By default, features `smtp`, `outlook` and `tracing` are enabled.
