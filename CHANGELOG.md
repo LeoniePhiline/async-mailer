@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Re-export `DynMailerError` type definition from `async-mailer-core`.
+- Fix crate usage examples.
 
 ## [0.3.1] - 2023-05-30
 

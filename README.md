@@ -12,28 +12,73 @@ async-mailer = "0.3.1"
 By default, features `smtp`, `outlook` and `tracing` are enabled.
 Use `default-features = false` and `features = [...]` to select features individually.
 
-## Example:
+## Examples:
+
+Use `new` for a strongly typed mailer instance,
+or `new_box` / `new_arc` for a type-erased dynamic mailer.
+
+Microsoft Outlook and SMTP mailer variants are available.
+
+# Using the strongly typed `async_mailer::Mailer`:
 
 ```rust
-// Use `new` for a strongly typed mailer instance,
-// or `new_box` / `new_arc` for a type-erased dynamic mailer.
-
-// Create a `BoxMailer` - alias for `Box<dyn DynMailer>`.
-let mailer: BoxMailer = OutlookMailer::new_box(
-    "<Microsoft Identity service tenant>",
-    "<OAuth2 app GUID>",
-    "<OAuth2 app secret>"
-).await?;
-
+// Create an `impl Mailer`.
+//
 // Alternative implementations can be used.
 
+let mailer = async_mailer::OutlookMailer::new(
+    "<Microsoft Identity service tenant>".into(),
+    "<OAuth2 app GUID>".into(),
+    async_mailer::Secret::new("<OAuth2 app secret>".into())
+).await?;
+
 // Alternative:
-let mailer: BoxMailer = SmtpMailer::new_box(
-    "smtp.example.com",
+let mailer = async_mailer::SmtpMailer::new(
+    "smtp.example.com".into(),
     465,
-    SmtpInvalidCertsPolicy::Deny,
-    "<username>",
-    "<password>"
+    async_mailer::SmtpInvalidCertsPolicy::Deny,
+    "<username>".into(),
+    async_mailer::Secret::new("<password>".into())
+);
+
+// Further alternative mailers can be implemented by third parties.
+
+// Build a message using the re-exported `mail_builder::MessageBuilder'.
+// For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
+use async_mailer::IntoMessage;
+let message = async_mailer::MessageBuilder::new()
+    .from(("From Name", "from@example.com"))
+    .to("to@example.com")
+    .subject("Subject")
+    .text_body("Mail body")
+    .into_message()?;
+
+// Send the message using the strongly typed `Mailer`.
+use async_mailer::Mailer;
+mailer.send_mail(message).await?;
+```
+
+# Using the dynamically typed `async_mailer::DynMailer`:
+
+```rust
+// Create a `BoxMailer`.
+//
+// Alternative implementations can be used.
+
+use async_mailer::BoxMailer;
+let mailer: BoxMailer = async_mailer::OutlookMailer::new_box( // Or `new_arc` to use in e.g. globally shared server state.
+    "<Microsoft Identity service tenant>".into(),
+    "<OAuth2 app GUID>".into(),
+    async_mailer::Secret::new("<OAuth2 app secret>".into())
+).await?;
+
+// Alternative:
+let mailer: BoxMailer = async_mailer::SmtpMailer::new_box( // Or `new_arc` to use in e.g. globally shared server state.
+    "smtp.example.com".into(),
+    465,
+    async_mailer::SmtpInvalidCertsPolicy::Deny,
+    "<username>".into(),
+    async_mailer::Secret::new("<password>".into())
 );
 
 // Further alternative mailers can be implemented by third parties.
@@ -42,14 +87,16 @@ let mailer: BoxMailer = SmtpMailer::new_box(
 
 // Build a message using the re-exported `mail_builder::MessageBuilder'.
 // For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
-let message = MessageBuilder::new()
+use async_mailer::IntoMessage;
+let message = async_mailer::MessageBuilder::new()
     .from(("From Name", "from@example.com"))
     .to("to@example.com")
     .subject("Subject")
-    .text_body("Mail body");
+    .text_body("Mail body")
+    .into_message()?;
 
 // Send the message using the implementation-agnostic `dyn DynMailer`.
-mailer.send_mail(&message).await?;
+mailer.send_mail(message).await?;
 ```
 
 ## Roadmap
