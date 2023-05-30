@@ -1,11 +1,13 @@
-//! An SMTP mailer, usable either stand-alone or as `dyn Mailer` using the `async_mailer` crate.
+//! An SMTP mailer, usable either stand-alone or as either generic `Mailer` or dynamic `dyn DynMailer` using the `async_mailer` crate.
 //!
 //! Note:
 //! If you are planning to always use `SmtpMailer` and do not need `async_mailer_outlook::OutlookMailer`
-//! or `Box<dyn async_mailer::Mailer`, then consider using the `mail_send` crate directly.
+//! or `async_mailer::BoxMailer`, then consider using the `mail_send` crate directly.
 //!
 //! Example:
 //! ```no_run
+//! // Use `new` for a strongly typed mailer instance,
+//! // or `new_box` / `new_arc` for a type-erased dynamic mailer.
 //! let mailer = SmtpMailer::new(
 //!     "smtp.example.com",
 //!     465,
@@ -23,6 +25,7 @@
 //! mailer.send_mail(&message).await?;
 //! ```
 
+use std::sync::Arc;
 use std::time::Duration;
 
 use async_trait::async_trait;
@@ -32,8 +35,7 @@ use secrecy::{ExposeSecret, Secret};
 use tracing::{error, info, instrument};
 
 use async_mailer_core::mail_send::{self, smtp::message::Message, SmtpClientBuilder};
-pub use async_mailer_core::Mailer;
-use async_mailer_core::{util, MailerError};
+use async_mailer_core::{util, ArcMailer, BoxMailer, DynMailer, DynMailerError, Mailer};
 
 /// Error returned by [`SmtpMailer::new`] and [`SmtpMailer::send_mail`].
 #[derive(Debug, thiserror::Error)]
@@ -57,7 +59,8 @@ pub enum SmtpInvalidCertsPolicy {
     Deny,
 }
 
-/// An SMTP mailer client, implementing the `async_mailer::Mailer` trait to be used as runtime-pluggable trait object.
+/// An SMTP mailer client, implementing the [`async_mailer::Mailer`] and [`async_mailer::DynMailer`] traits
+/// to be used as generic mailer or runtime-pluggable trait object.
 ///
 /// An abstraction over `mail_send`, sending mail via an SMTP connection.
 ///
@@ -93,13 +96,39 @@ impl SmtpMailer {
 
         Self { inner: smtp_client }
     }
+
+    /// Create a new SMTP mailer client as dynamic `async_mailer::BoxMailer`.
+    #[cfg_attr(feature = "tracing", instrument)]
+    pub fn new_box(
+        host: String,
+        port: u16,
+        invalid_certs: SmtpInvalidCertsPolicy,
+        user: String,
+        password: Secret<String>,
+    ) -> BoxMailer {
+        Box::new(Self::new(host, port, invalid_certs, user, password))
+    }
+
+    /// Create a new SMTP mailer client as dynamic `async_mailer::ArcMailer`.
+    #[cfg_attr(feature = "tracing", instrument)]
+    pub fn new_arc(
+        host: String,
+        port: u16,
+        invalid_certs: SmtpInvalidCertsPolicy,
+        user: String,
+        password: Secret<String>,
+    ) -> ArcMailer {
+        Arc::new(Self::new(host, port, invalid_certs, user, password))
+    }
 }
+
+// == Mailer ==
 
 #[async_trait]
 impl Mailer for SmtpMailer {
-    /// Send the prepared MIME message via an SMTP connection.
-    #[cfg_attr(feature = "tracing", instrument(skip(message)))]
-    async fn send_mail(&self, message: Message<'_>) -> Result<(), MailerError> {
+    type Error = SmtpMailerError;
+
+    async fn send_mail(&self, message: Message<'_>) -> Result<(), Self::Error> {
         #[cfg(feature = "tracing")]
         // Extract recipient addresses for tracing log output.
         let recipient_addresses = util::format_recipient_addresses(&message);
@@ -133,5 +162,16 @@ impl Mailer for SmtpMailer {
         }
 
         Ok(response.map_err(SmtpMailerError::Send)?)
+    }
+}
+
+// == DynMailer ==
+
+#[async_trait]
+impl DynMailer for SmtpMailer {
+    /// Send the prepared MIME message via an SMTP connection.
+    #[cfg_attr(feature = "tracing", instrument(skip(message)))]
+    async fn send_mail(&self, message: Message<'_>) -> Result<(), DynMailerError> {
+        Mailer::send_mail(self, message).await.map_err(Into::into)
     }
 }
