@@ -4,7 +4,7 @@ description = "Async SMTP mailer implementation, intended to be used as `async-m
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer/smtp"
 documentation = "https://docs.rs/async-mailer-smtp/"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
 
 [features]
