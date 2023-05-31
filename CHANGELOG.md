@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+## [0.3.4] - 2023-05-31
+
 ### Added
 
 - SMTP mailer: Add `clap` feature flag, which implements [`clap::ValueEnum`](https://docs.rs/clap/latest/clap/trait.ValueEnum.html)
@@ -82,7 +84,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.3...HEAD
+[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.4...HEAD
+[0.3.4]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.0...v0.3.1

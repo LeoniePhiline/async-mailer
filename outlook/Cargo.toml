@@ -4,7 +4,7 @@ description = "Async Outlook (Office365) mailer implementation, intended to be u
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer/outlook"
 documentation = "https://docs.rs/async-mailer-outlook/"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 
 [features]
