@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `clap` feature flag, which implements [`clap::ValueEnum`](https://docs.rs/clap/latest/clap/trait.ValueEnum.html)
   for `SmtpInvalidCertsPolicy`.
 - Implement `Default` for `SmtpInvalidCertsPolicy::Deny`.
+- Vastly improve documentation.
 
 ## [0.2.1] - 2023-05-30
 

@@ -1,8 +1,15 @@
-//! An SMTP mailer, usable either stand-alone or as either generic `Mailer` or dynamic `dyn DynMailer` using the `async_mailer` crate.
+//! An SMTP mailer, usable either stand-alone or as either generic `Mailer` or dynamic `dyn DynMailer` using the `mail-send` crate.
 //!
-//! Note:
+//! **Preferably, use [`async-mailer`](https://docs.rs/async-mailer), which re-exports from this crate,
+//! rather than using `async-mailer-smtp` directly.**
+//!
+//! You can control the re-exported mailer implementations,
+//! as well as [`tracing`](https://docs.rs/crate/tracing) support,
+//! via [`async-mailer` feature toggles](https://docs.rs/crate/async-mailer/latest/features).
+//!
+//! **Note:**
 //! If you are planning to always use `SmtpMailer` and do not need `async_mailer_outlook::OutlookMailer`
-//! or `async_mailer::BoxMailer`, then consider using the `mail_send` crate directly.
+//! or `async_mailer::BoxMailer`, then consider using the [`mail-send`](https://docs.rs/mail-send) crate directly.
 //!
 //! # Examples
 //!
@@ -10,9 +17,8 @@
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), Box<dyn std::error::Error>> {
-//! // Create an `impl Mailer`.
-//! //
-//! // Alternative implementations can be used.
+//! // Both `async_mailer::OutlookMailer` and `async_mailer::SmtpMailer` implement `Mailer`
+//! // and can be used with `impl Mailer` or `<M: Mailer>` bounds.
 //!
 //! # use async_mailer_smtp::{ SmtpMailer, SmtpInvalidCertsPolicy };
 //! let mailer = SmtpMailer::new(
@@ -27,7 +33,10 @@
 //! // Further alternative mailers can be implemented by third parties.
 //!
 //! // Build a message using the re-exported `mail_builder::MessageBuilder'.
-//! // For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
+//! //
+//! // For blazingly fast rendering of beautiful HTML mail,
+//! // I recommend combining `askama` with `mrml`.
+//!
 //! # use async_mailer_core::mail_send::smtp::message::IntoMessage;
 //! let message = async_mailer_core::mail_send::mail_builder::MessageBuilder::new()
 //!     .from(("From Name", "from@example.com"))
@@ -37,6 +46,7 @@
 //!     .into_message()?;
 //!
 //! // Send the message using the strongly typed `Mailer`.
+//!
 //! # use async_mailer_core::Mailer;
 //! mailer.send_mail(message).await?;
 //! # Ok(())
@@ -47,13 +57,14 @@
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), async_mailer_core::DynMailerError> {
-//! // Create a `BoxMailer`.
+//! // Both `async_mailer::OutlookMailer` and `async_mailer::SmtpMailer`
+//! // implement `DynMailer` and can be used as trait objects.
 //! //
-//! // Alternative implementations can be used.
+//! // Here they are used as `BoxMailer`, which is an alias to `Box<dyn DynMailer>`.
 //!
 //! # use async_mailer_core::BoxMailer;
 //! # use async_mailer_smtp::{ SmtpMailer, SmtpInvalidCertsPolicy };
-//! let mailer: BoxMailer = SmtpMailer::new_box( // Or `new_arc` to use in e.g. globally shared server state.
+//! let mailer: BoxMailer = SmtpMailer::new_box( // Or `SmtpMailer::new_arc()`.
 //!     "smtp.example.com".into(),
 //!     465,
 //!     SmtpInvalidCertsPolicy::Deny,
@@ -67,7 +78,10 @@
 //! // The trait object is `Send` and `Sync` and may be stored e.g. as part of your server state.
 //!
 //! // Build a message using the re-exported `mail_builder::MessageBuilder'.
-//! // For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
+//! //
+//! // For blazingly fast rendering of beautiful HTML mail,
+//! // I recommend combining `askama` with `mrml`.
+//!
 //! # use async_mailer_core::mail_send::smtp::message::IntoMessage;
 //! let message = async_mailer_core::mail_send::mail_builder::MessageBuilder::new()
 //!     .from(("From Name", "from@example.com"))
@@ -77,10 +91,24 @@
 //!     .into_message()?;
 //!
 //! // Send the message using the implementation-agnostic `dyn DynMailer`.
+//!
 //! mailer.send_mail(message).await?;
 //! # Ok(())
 //! # }
 //! ```
+//!
+//! # Feature flags
+//!
+//! - `tracing`: Enable debug and error logging using the [`tracing`](https://docs.rs/crate/tracing) crate.
+//!   All relevant functions are instrumented.
+//! - `clap`: Implement [`clap::ValueEnum`](https://docs.rs/clap/latest/clap/trait.ValueEnum.html) for [`SmtpInvalidCertsPolicy`].
+//!   This allows for easily configured CLI options like `--invalid-certs <allow|deny>`.
+//!
+//! Default: `tracing`.
+//!
+//! ## Roadmap
+//!
+//! DKIM support is planned to be implemented on the [`SmtpMailer`].
 
 use std::sync::Arc;
 use std::time::Duration;
@@ -101,9 +129,11 @@ use async_mailer_core::{util, ArcMailer, BoxMailer, DynMailer, DynMailerError, M
 /// Error returned by [`SmtpMailer::new`] and [`SmtpMailer::send_mail`].
 #[derive(Debug, thiserror::Error)]
 pub enum SmtpMailerError {
+    /// Could not connect to SMTP host.
     #[error("could not connect to SMTP host")]
     Connect(mail_send::Error),
 
+    /// Could not send SMTP mail.
     #[error("could not send SMTP mail")]
     Send(mail_send::Error),
 }
@@ -130,7 +160,7 @@ pub enum SmtpInvalidCertsPolicy {
     Deny,
 }
 
-/// An SMTP mailer client, implementing the [`async_mailer::Mailer`] and [`async_mailer::DynMailer`] traits
+/// An SMTP mailer client, implementing the [`async_mailer_core::Mailer`] and [`async_mailer_core::DynMailer`] traits
 /// to be used as generic mailer or runtime-pluggable trait object.
 ///
 /// An abstraction over `mail_send`, sending mail via an SMTP connection.
@@ -199,6 +229,13 @@ impl SmtpMailer {
 impl Mailer for SmtpMailer {
     type Error = SmtpMailerError;
 
+    /// Send the prepared MIME message via an SMTP connection, using the previously configured credentials.
+    ///
+    /// # Errors
+    ///
+    /// Returns an [`SmtpMailerError::Connect`] error if a connection to the SMTP server cannot be established.
+    ///
+    /// Returns an [`SmtpMailerError::Send`] error if the connection was established but sending the e-mail message failed.
     async fn send_mail(&self, message: Message<'_>) -> Result<(), Self::Error> {
         #[cfg(feature = "tracing")]
         // Extract recipient addresses for tracing log output.
@@ -240,7 +277,13 @@ impl Mailer for SmtpMailer {
 
 #[async_trait]
 impl DynMailer for SmtpMailer {
-    /// Send the prepared MIME message via an SMTP connection.
+    /// Send the prepared MIME message via an SMTP connection, using the previously configured credentials.
+    ///
+    /// # Errors
+    ///
+    /// Returns a boxed, type-erased [`SmtpMailerError::Connect`] error if a connection to the SMTP server cannot be established.
+    ///
+    /// Returns a boxed, type-erased [`SmtpMailerError::Send`] error if the connection was established but sending the e-mail message failed.
     #[cfg_attr(feature = "tracing", instrument(skip(message)))]
     async fn send_mail(&self, message: Message<'_>) -> Result<(), DynMailerError> {
         Mailer::send_mail(self, message).await.map_err(Into::into)

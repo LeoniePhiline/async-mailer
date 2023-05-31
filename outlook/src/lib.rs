@@ -1,4 +1,11 @@
-//! An Outlook mailer, usable either stand-alone or as either generic `Mailer` or dynamic `dyn DynMailer` using the `async_mailer` crate.
+//! An Outlook mailer, usable either stand-alone or as either generic `Mailer` or dynamic `dyn DynMailer`.
+//!
+//! **Preferably, use [`async-mailer`](https://docs.rs/async-mailer), which re-exports from this crate,
+//! rather than using `async-mailer-outlook` directly.**
+//!
+//! You can control the re-exported mailer implementations,
+//! as well as [`tracing`](https://docs.rs/crate/tracing) support,
+//! via [`async-mailer` feature toggles](https://docs.rs/crate/async-mailer/latest/features).
 //!
 //! # Examples
 //!
@@ -6,9 +13,8 @@
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), Box<dyn std::error::Error>> {
-//! // Create an `impl Mailer`.
-//! //
-//! // Alternative implementations can be used.
+//! // Both `async_mailer::OutlookMailer` and `async_mailer::SmtpMailer` implement `Mailer`
+//! // and can be used with `impl Mailer` or `<M: Mailer>` bounds.
 //!
 //! # use async_mailer_outlook::OutlookMailer;
 //! let mailer = OutlookMailer::new(
@@ -21,7 +27,10 @@
 //! // Further alternative mailers can be implemented by third parties.
 //!
 //! // Build a message using the re-exported `mail_builder::MessageBuilder'.
-//! // For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
+//! //
+//! // For blazingly fast rendering of beautiful HTML mail,
+//! // I recommend combining `askama` with `mrml`.
+//!
 //! # use async_mailer_core::mail_send::smtp::message::IntoMessage;
 //! let message = async_mailer_core::mail_send::mail_builder::MessageBuilder::new()
 //!     .from(("From Name", "from@example.com"))
@@ -31,6 +40,7 @@
 //!     .into_message()?;
 //!
 //! // Send the message using the strongly typed `Mailer`.
+//!
 //! # use async_mailer_core::Mailer;
 //! mailer.send_mail(message).await?;
 //! # Ok(())
@@ -41,13 +51,14 @@
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), async_mailer_core::DynMailerError> {
-//! // Create a `BoxMailer`.
+//! // Both `async_mailer::OutlookMailer` and `async_mailer::SmtpMailer`
+//! // implement `DynMailer` and can be used as trait objects.
 //! //
-//! // Alternative implementations can be used.
+//! // Here they are used as `BoxMailer`, which is an alias to `Box<dyn DynMailer>`.
 //!
 //! # use async_mailer_core::BoxMailer;
 //! # use async_mailer_outlook::OutlookMailer;
-//! let mailer: BoxMailer = OutlookMailer::new_box( // Or `new_arc` to use in e.g. globally shared server state.
+//! let mailer: BoxMailer = OutlookMailer::new_box( // Or `OUtlookMailer::new_arc()`.
 //!     "<Microsoft Identity service tenant>".into(),
 //!     "<OAuth2 app GUID>".into(),
 //!     secrecy::Secret::new("<OAuth2 app secret>".into())
@@ -59,7 +70,10 @@
 //! // The trait object is `Send` and `Sync` and may be stored e.g. as part of your server state.
 //!
 //! // Build a message using the re-exported `mail_builder::MessageBuilder'.
-//! // For blazingly fast rendering of beautiful HTML mail, I recommend combining `askama` with `mrml`.
+//! //
+//! // For blazingly fast rendering of beautiful HTML mail,
+//! // I recommend combining `askama` with `mrml`.
+//!
 //! # use async_mailer_core::mail_send::smtp::message::IntoMessage;
 //! let message = async_mailer_core::mail_send::mail_builder::MessageBuilder::new()
 //!     .from(("From Name", "from@example.com"))
@@ -69,10 +83,22 @@
 //!     .into_message()?;
 //!
 //! // Send the message using the implementation-agnostic `dyn DynMailer`.
+//!
 //! mailer.send_mail(message).await?;
 //! # Ok(())
 //! # }
 //! ```
+//!
+//! # Feature flags
+//!
+//! - `tracing`: Enable debug and error logging using the [`tracing`](https://docs.rs/crate/tracing) crate.
+//!   All relevant functions are instrumented.
+//!
+//! Default: `tracing`.
+//!
+//! ## Roadmap
+//!
+//! Access token auto-refresh is planned to be implemented on the [`OutlookMailer`].
 
 use std::sync::Arc;
 
@@ -91,15 +117,20 @@ use async_mailer_core::{util, ArcMailer, BoxMailer, DynMailer, DynMailerError, M
 /// Error returned by [`OutlookMailer::new`] and [`OutlookMailer::send_mail`].
 #[derive(Debug, thiserror::Error)]
 pub enum OutlookMailerError {
+    /// Failed to retrieve Microsoft Graph API access token.
     #[error("failed to retrieve Microsoft Graph API access token")]
     RetrieveAccessToken(#[from] OutlookAccessTokenError),
 
+    /// Failed request attempting to send Outlook MIME mail through Microsoft Graph API.
     #[error("failed request attempting to send Outlook MIME mail through Microsoft Graph API")]
     SendMailRequest(reqwest::Error),
 
+    /// Failed sending Outlook MIME mail through Microsoft Graph API.
     #[error("failed sending Outlook MIME mail through Microsoft Graph API")]
     SendMailResponse(reqwest::Error),
 
+    /// Failed retrieving response body from Microsoft Graph API.
+    /// (Crate feature `tracing` only.)
     #[cfg(feature = "tracing")]
     #[error("failed retrieving response body from Microsoft Graph API")]
     SendMailResponseBody(reqwest::Error),
@@ -108,12 +139,15 @@ pub enum OutlookMailerError {
 /// Error returned by [`OutlookMailer::new`] if an access token cannot be retrieved.
 #[derive(Debug, thiserror::Error)]
 pub enum OutlookAccessTokenError {
+    /// Failed sending OAuth2 client credentials grant access token request to Microsoft Identity service.
     #[error("failed sending OAuth2 client credentials grant access token request to Microsoft Identity service")]
     SendRequest(reqwest::Error),
 
+    /// Failed receiving OAuth2 client credentials grant access token response from Microsoft Identity service.
     #[error("failed receiving OAuth2 client credentials grant access token response from Microsoft Identity service")]
     ReceiveResponse(reqwest::Error),
 
+    /// Failed to parse OAuth2 client credentials grant access token response from Microsoft Identity service.
     #[error("failed to parse OAuth2 client credentials grant access token response from Microsoft Identity service")]
     ParseResponse(serde_json::Error),
 }
@@ -131,8 +165,14 @@ pub struct OutlookMailer {
 impl OutlookMailer {
     /// Create a new Outlook mailer client.
     ///
-    /// Returns a [`OutlookMailerError::RetrieveAccessToken`]
-    /// when the attempt to retrieve an access token from the Microsoft Identity Service fails.
+    /// # Errors
+    ///
+    /// Returns an [`OutlookMailerError::RetrieveAccessToken`] error
+    /// when the attempt to retrieve an access token from the Microsoft Identity Service fails:
+    ///
+    /// - Wrapping an [`OutlookAccessTokenError::SendRequest`] error if sending the token request fails.
+    /// - Wrapping an [`OutlookAccessTokenError::ReceiveResponse`] error if the response body cannot be received.
+    /// - Wrapping an [`OutlookAccessTokenError::ParseResponse`] error if the response body bytes cannot be parsed as JSON.
     #[cfg_attr(feature = "tracing", instrument)]
     pub async fn new(
         tenant: String,
@@ -153,8 +193,14 @@ impl OutlookMailer {
 
     /// Create a new Outlook mailer client as dynamic `async_mailer::BoxMailer`.
     ///
-    /// Returns a [`OutlookMailerError::RetrieveAccessToken`]
-    /// when the attempt to retrieve an access token from the Microsoft Identity Service fails.
+    /// # Errors
+    ///
+    /// Returns an [`OutlookMailerError::RetrieveAccessToken`] error
+    /// when the attempt to retrieve an access token from the Microsoft Identity Service fails:
+    ///
+    /// - Wrapping an [`OutlookAccessTokenError::SendRequest`] error if sending the token request fails.
+    /// - Wrapping an [`OutlookAccessTokenError::ReceiveResponse`] error if the response body cannot be received.
+    /// - Wrapping an [`OutlookAccessTokenError::ParseResponse`] error if the response body bytes cannot be parsed as JSON.
     #[cfg_attr(feature = "tracing", instrument)]
     pub async fn new_box(
         tenant: String,
@@ -166,8 +212,14 @@ impl OutlookMailer {
 
     /// Create a new Outlook mailer client as dynamic `async_mailer::ArcMailer`.
     ///
-    /// Returns a [`OutlookMailerError::RetrieveAccessToken`]
-    /// when the attempt to retrieve an access token from the Microsoft Identity Service fails.
+    /// # Errors
+    ///
+    /// Returns an [`OutlookMailerError::RetrieveAccessToken`] error
+    /// when the attempt to retrieve an access token from the Microsoft Identity Service fails:
+    ///
+    /// - Wrapping an [`OutlookAccessTokenError::SendRequest`] error if sending the token request fails.
+    /// - Wrapping an [`OutlookAccessTokenError::ReceiveResponse`] error if the response body cannot be received.
+    /// - Wrapping an [`OutlookAccessTokenError::ParseResponse`] error if the response body bytes cannot be parsed as JSON.
     #[cfg_attr(feature = "tracing", instrument)]
     pub async fn new_arc(
         tenant: String,
@@ -179,7 +231,13 @@ impl OutlookMailer {
 
     /// Retrieve an OAuth2 client credentials grant access token from the Microsoft Identity service.
     ///
-    /// Returns a [`OutlookAccessTokenError`] in case of request, response or JSON parse failure.
+    /// # Errors
+    ///
+    /// Returns an [`OutlookAccessTokenError::SendRequest`] error if sending the token request fails.
+    ///
+    /// Returns an [`OutlookAccessTokenError::ReceiveResponse`] error if the response body cannot be received.
+    ///
+    /// Returns an [`OutlookAccessTokenError::ParseResponse`] error if the response body bytes cannot be parsed as JSON.
     #[cfg_attr(feature = "tracing", instrument)]
     async fn get_access_token(
         tenant_id: &str,
@@ -222,6 +280,20 @@ impl Mailer for OutlookMailer {
     type Error = OutlookMailerError;
 
     /// Send the prepared MIME message via the Microsoft Graph API.
+    /// Strongly typed [`Mailer`] implementation for direct
+    /// or generic (`impl Mailer` / `<M: Mailer>`) invocation without vtable dispatch.
+    ///
+    /// # Errors
+    ///
+    /// Returns an [`OutlookMailerError::SendMailRequest`] error if sending the mailing request to the
+    /// Microsoft Graph API fails.
+    ///
+    /// Returns an [`OutlookMailerError::SendMailResponse`] error if the Microsoft Graph API responds
+    /// with a non-success HTTP status code.
+    ///
+    /// Returns an [`OutlookMailerError::SendMailResponseBody`] error if the Microsoft Graph API reponse body
+    /// cannot be received.
+    /// (Crate feature `tracing` only: The response body is only received for logging.)
     async fn send_mail(&self, message: Message<'_>) -> Result<(), Self::Error> {
         // TODO: Token auto-refresh.
 
@@ -313,6 +385,19 @@ impl Mailer for OutlookMailer {
 #[async_trait]
 impl DynMailer for OutlookMailer {
     /// Send the prepared MIME message via the Microsoft Graph API.
+    /// Dynamically typed [`DynMailer`] implementation for trait object invocation via vtable dispatch.
+    ///
+    /// # Errors
+    ///
+    /// Returns a boxed, type-erased [`OutlookMailerError::SendMailRequest`] error if sending the mailing request to the
+    /// Microsoft Graph API fails.
+    ///
+    /// Returns a boxed, type-erased  [`OutlookMailerError::SendMailResponse`] error if the Microsoft Graph API responds
+    /// with a non-success HTTP status code.
+    ///
+    /// Returns a boxed, type-erased [`OutlookMailerError::SendMailResponseBody`] error if the Microsoft Graph API reponse body
+    /// cannot be received.
+    /// (Crate feature `tracing` only: The response body is only received for logging.)
     #[cfg_attr(feature = "tracing", instrument(skip(message)))]
     async fn send_mail(&self, message: Message<'_>) -> Result<(), DynMailerError> {
         Mailer::send_mail(self, message).await.map_err(Into::into)
