@@ -160,10 +160,11 @@ pub enum SmtpInvalidCertsPolicy {
     Deny,
 }
 
-/// An SMTP mailer client, implementing the [`async_mailer_core::Mailer`] and [`async_mailer_core::DynMailer`] traits
+/// An SMTP mailer client, implementing the [`async_mailer_core::Mailer`](https://docs.rs/async-mailer/latest/async_mailer/trait.Mailer.html)
+/// and [`async_mailer_core::DynMailer`](https://docs.rs/async-mailer/latest/async_mailer/trait.DynMailer.html) traits
 /// to be used as generic mailer or runtime-pluggable trait object.
 ///
-/// An abstraction over `mail_send`, sending mail via an SMTP connection.
+/// An abstraction over [`mail-send`](https://docs.rs/mail-send), sending mail via an SMTP connection.
 ///
 /// Self-signed certificates can optionally be accepted, to use the SMTP mailer in development while using the Outlook mailer in production.
 #[derive(Clone)]

@@ -152,7 +152,8 @@ pub enum OutlookAccessTokenError {
     ParseResponse(serde_json::Error),
 }
 
-/// An Outlook mailer client, implementing the `async_mailer::Mailer` and `async_mailer::DynMailer` traits
+/// An Outlook mailer client, implementing the [`async_mailer_core::Mailer`](https://docs.rs/async-mailer/latest/async_mailer/trait.Mailer.html)
+/// and [`async_mailer_core::DynMailer`](https://docs.rs/async-mailer/latest/async_mailer/trait.DynMailer.html) traits
 /// to be used as generic mailer or runtime-pluggable trait object.
 ///
 /// Sends mail authenticated by OAuth2 client credentials grant via the Microsoft Graph API.
