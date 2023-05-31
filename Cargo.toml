@@ -11,8 +11,11 @@ edition = "2021"
 
 [features]
 default = ["outlook", "smtp", "tracing"]
+
 outlook = ["dep:async-mailer-outlook"]
 smtp = ["dep:async-mailer-smtp"]
+
+clap = ["async-mailer-smtp?/clap"]
 tracing = ["async-mailer-core/tracing", "async-mailer-outlook?/tracing", "async-mailer-smtp?/tracing"]
 
 [dependencies]

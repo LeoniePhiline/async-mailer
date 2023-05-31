@@ -86,6 +86,10 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use async_trait::async_trait;
+
+#[cfg(feature = "clap")]
+use clap;
+
 use secrecy::{ExposeSecret, Secret};
 
 #[cfg(feature = "tracing")]
@@ -109,10 +113,20 @@ pub enum SmtpMailerError {
 /// This option allows to perform tests or local development work against
 /// SMTP development servers like MailHog or MailPit, while using a self-signed certificate.
 ///
-/// Never use [`SmtpInvalidCertsPolicy::Allow`] in production!
-#[derive(Clone, Debug)]
+/// **Never use [`SmtpInvalidCertsPolicy::Allow`] in production!**
+// TODO: derive Clap ValueEnum
+#[derive(Clone, Debug, Default)]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum))]
 pub enum SmtpInvalidCertsPolicy {
+    /// Allow connecting to SMTP servers with invalid TLS certificates.
+    ///
+    /// **Do not use in production!**
     Allow,
+
+    /// Deny connecting to SMTP servers with invalid TLS certificates.
+    ///
+    /// This variant is the [`Default`].
+    #[default]
     Deny,
 }
 
