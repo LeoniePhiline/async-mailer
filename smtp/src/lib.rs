@@ -20,7 +20,7 @@
 //! // Both `async_mailer::OutlookMailer` and `async_mailer::SmtpMailer` implement `Mailer`
 //! // and can be used with `impl Mailer` or `<M: Mailer>` bounds.
 //!
-//! # use async_mailer_smtp::{ SmtpMailer, SmtpInvalidCertsPolicy };
+//! # use async_mailer_smtp::{SmtpMailer, SmtpInvalidCertsPolicy};
 //! let mailer = SmtpMailer::new(
 //!     "smtp.example.com".into(),
 //!     465,
@@ -63,7 +63,7 @@
 //! // Here they are used as `BoxMailer`, which is an alias to `Box<dyn DynMailer>`.
 //!
 //! # use async_mailer_core::BoxMailer;
-//! # use async_mailer_smtp::{ SmtpMailer, SmtpInvalidCertsPolicy };
+//! # use async_mailer_smtp::{SmtpMailer, SmtpInvalidCertsPolicy};
 //! let mailer: BoxMailer = SmtpMailer::new_box( // Or `SmtpMailer::new_arc()`.
 //!     "smtp.example.com".into(),
 //!     465,

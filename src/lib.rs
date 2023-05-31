@@ -34,7 +34,7 @@
 //! // Both `OutlookMailer` and `SmtpMailer` implement `Mailer`
 //! // and can be used with `impl Mailer` or `<M: Mailer>` bounds.
 //!
-//! use async_mailer::{ IntoMessage, Mailer, OutlookMailer, SmtpMailer };
+//! use async_mailer::{IntoMessage, Mailer, OutlookMailer, SmtpMailer};
 //!
 //! let mailer: OutlookMailer = OutlookMailer::new(
 //!     "<Microsoft Identity service tenant>".into(),
@@ -77,7 +77,7 @@
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), async_mailer::DynMailerError> {
-//! use async_mailer::{ BoxMailer, IntoMessage, OutlookMailer, SmtpMailer };
+//! use async_mailer::{BoxMailer, IntoMessage, OutlookMailer, SmtpMailer};
 //!
 //! // Both `OutlookMailer` and `SmtpMailer` implement `DynMailer` and can be used as trait objects.
 //! // Here they are used as `BoxMailer`, which is an alias to `Box<dyn DynMailer>`.
