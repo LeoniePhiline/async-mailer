@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### Fixed
+
+- Change wording "strongly" to "statically" typed.
+
 ## [0.2.3] - 2023-05-31
 
 ### Fixed
@@ -39,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add `impl` for strongly typed `Mailer` trait to be used as generic trait bound.
+- Add `impl` for statically typed `Mailer` trait to be used as generic trait bound.
 - Add `new_box` and `new_arc` to create new `BoxMailer` and `ArcMailer` type aliases for `dyn DynMailer` wrapped in smart pointers.
 - Add a `CHANGELOG.md` and configure `cargo-release`.
 

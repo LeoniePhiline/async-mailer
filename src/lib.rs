@@ -22,12 +22,12 @@
 //!
 //! # Examples
 //!
-//! Use `new` for a strongly typed mailer instance,
+//! Use `new` for a statically typed mailer instance,
 //! or `new_box` / `new_arc` for a type-erased dynamic mailer.
 //!
 //! Microsoft Outlook and SMTP mailer variants are available.
 //!
-//! ## Using the strongly typed `Mailer`:
+//! ## Using the statically typed `Mailer`:
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), Box<dyn std::error::Error>> {
@@ -66,7 +66,7 @@
 //!     .text_body("Mail body")
 //!     .into_message()?;
 //!
-//! // Send the message using the strongly typed `Mailer`.
+//! // Send the message using the statically typed `Mailer`.
 //!
 //! mailer.send_mail(message).await?;
 //! # Ok(())

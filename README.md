@@ -22,12 +22,12 @@ Use `default-features = false` and `features = [...]` to select features individ
 
 ## Examples:
 
-Use `new` for a strongly typed mailer instance,
+Use `new` for a statically typed mailer instance,
 or `new_box` / `new_arc` for a type-erased dynamic mailer.
 
 [Microsoft Outlook (Office365)][OutlookMailer] and [SMTP][SmtpMailer] variants are available.
 
-# Using the strongly typed [`Mailer`][Mailer]:
+# Using the statically typed [`Mailer`][Mailer]:
 
 ```rust
 // Both `OutlookMailer` and `SmtpMailer` implement `Mailer`
@@ -65,7 +65,7 @@ let message = async_mailer::MessageBuilder::new()
     .text_body("Mail body")
     .into_message()?;
 
-// Send the message using the strongly typed `Mailer`.
+// Send the message using the statically typed `Mailer`.
 
 mailer.send_mail(message).await?;
 ```

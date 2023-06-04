@@ -9,7 +9,7 @@
 //!
 //! # Examples
 //!
-//! ## Using the strongly typed `Mailer`:
+//! ## Using the statically typed `Mailer`:
 //!
 //! ```no_run
 //! # async fn test() -> Result<(), Box<dyn std::error::Error>> {
@@ -39,7 +39,7 @@
 //!     .text_body("Mail body")
 //!     .into_message()?;
 //!
-//! // Send the message using the strongly typed `Mailer`.
+//! // Send the message using the statically typed `Mailer`.
 //!
 //! # use async_mailer_core::Mailer;
 //! mailer.send_mail(message).await?;
@@ -281,7 +281,7 @@ impl Mailer for OutlookMailer {
     type Error = OutlookMailerError;
 
     /// Send the prepared MIME message via the Microsoft Graph API.
-    /// Strongly typed [`Mailer`] implementation for direct
+    /// Statically typed [`Mailer`] implementation for direct
     /// or generic (`impl Mailer` / `<M: Mailer>`) invocation without vtable dispatch.
     ///
     /// # Errors

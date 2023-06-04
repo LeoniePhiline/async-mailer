@@ -8,7 +8,7 @@ use mail_send::smtp::message::Message;
 
 // == Mailer ==
 
-/// Strongly typed [`Mailer`], to be used in `impl Mailer` or `<M: Mailer>` bounds.
+/// Statically typed [`Mailer`], to be used in `impl Mailer` or `<M: Mailer>` bounds.
 ///
 /// The `async-mailer` crate exports Microsoft Outlook and SMTP mailers implementing the [`Mailer`] and [`DynMailer`] traits.
 #[async_trait]
