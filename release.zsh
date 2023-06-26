@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-cargo release -vv --workspace patch "$@"
+cargo release -vv --workspace "$@"
