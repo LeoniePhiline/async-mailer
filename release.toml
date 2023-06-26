@@ -9,5 +9,5 @@ pre-release-replacements = [
   {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n\n## [Unreleased] <!-- release-date -->", exactly=1},
   {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/{{tag_name}}...HEAD", exactly=1},
 ]
-pre-release-commit-message = "release: async-mailer {{version}}"
+pre-release-commit-message = "release: {{crate_name}} {{version}}"
 pre-release-hook = ["cargo", "test"]
