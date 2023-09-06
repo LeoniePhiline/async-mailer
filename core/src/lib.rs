@@ -1,4 +1,4 @@
-//! Core trait for `async-mailer`. Use [`async-mailer`](https://docs.rs/async-mailer-core/latest/async_mailer_core/) instead.
+//! Core trait for `async-mailer`. Use [`async-mailer`](https://docs.rs/async-mailer/latest/async_mailer/) instead.
 use std::{fmt::Debug, sync::Arc};
 
 pub use async_trait::async_trait;
