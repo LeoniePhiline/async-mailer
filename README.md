@@ -10,7 +10,7 @@ A set of async generic [`Mailer`][Mailer] and dynamic [`dyn DynMailer`][DynMaile
 Add to your `Cargo.toml`:
 
 ```toml
-async-mailer = "0.3.5"
+async-mailer = "0.4.0"
 ```
 
 You can control the re-exported mailer implementations,
