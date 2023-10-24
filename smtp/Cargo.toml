@@ -4,7 +4,7 @@ description = "Async SMTP mailer implementation, intended to be used as `async-m
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer/smtp"
 documentation = "https://docs.rs/async-mailer-smtp/"
-version = "0.2.3"
+version = "0.3.0"
 edition = "2021"
 
 [features]
@@ -13,7 +13,7 @@ tracing = ["dep:tracing"]
 clap = ["dep:clap"]
 
 [dependencies]
-async-mailer-core = { path = "../core", version = "0.2" }
+async-mailer-core = { path = "../core", version = "0.3" }
 async-trait = "0.1.68"
 clap = { optional = true, version = "4.3.0", features = ["derive"] }
 secrecy = "0.8.0"
