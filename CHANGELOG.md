@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update dependencies.
 
+### BREAKING CHANGES
+
+- Update `async-mailer-core`, which updates re-exported dependency `mail-send` to v0.4,
+  updating transitively re-exported dependency
+  [`mail-builder` to v0.3](https://github.com/stalwartlabs/mail-builder/compare/0.2.5...v0.3.1).
+
 ## [0.3.5] - 2023-05-31
 
 ### Fixed
