@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2023-10-24
 
+## [0.3.0] - 2023-10-24
+
 ### Fixed
 
 - Change wording "strongly" to "statically" typed.
@@ -55,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-url -->
 [Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.3.0...HEAD
+[0.3.0]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.3.0...async-mailer-core-v0.3.0
 [0.3.0]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.2.2...async-mailer-core-v0.3.0
 [0.2.2]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.2.1...async-mailer-core-v0.2.2
 [0.2.1]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.2.0...async-mailer-core-v0.2.1
