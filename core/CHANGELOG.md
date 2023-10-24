@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### Fixed
+
+- Fix changelog after duplicate release due to missing crates.io API token.
+
 ## [0.3.0] - 2023-10-24
 
 ### Fixed
