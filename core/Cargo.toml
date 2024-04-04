@@ -15,5 +15,5 @@ tracing = ["dep:tracing"]
 async-trait = "0.1.79"
 mail-send = { version = "0.4.1", default-features = false, features = ["builder"] }
 secrecy = "0.8.0"
-thiserror = "1.0.38"
+thiserror = "1.0.58"
 tracing = { optional = true, version = "0.1.37" }
