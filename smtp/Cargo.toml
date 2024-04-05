@@ -6,7 +6,7 @@ keywords = ["async", "mailer", "smtp"]
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer/smtp"
 documentation = "https://docs.rs/async-mailer-smtp/"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2021"
 
 [features]
