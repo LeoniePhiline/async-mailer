@@ -1,6 +1,8 @@
 [package]
 name = "async-mailer-core"
 description = "Internal core crate for `async-mailer`."
+categories = ["email"]
+keywords = ["async", "mailer", "smtp", "outlook"]
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer/core"
 documentation = "https://docs.rs/async-mailer-core/"

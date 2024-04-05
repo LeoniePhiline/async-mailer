@@ -1,6 +1,8 @@
 [package]
 name = "async-mailer-smtp"
 description = "Async SMTP mailer implementation, intended to be used as `async-mailer` generic `Mailer` or `DynMailer` trait object."
+categories = ["email"]
+keywords = ["async", "mailer", "smtp"]
 license = "MPL-2.0"
 repository = "https://github.com/LeoniePhiline/async-mailer/smtp"
 documentation = "https://docs.rs/async-mailer-smtp/"

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### Added
+
+- Add missing crate metadata `categories` and `keywords`.
+
 ## [0.3.1] - 2024-04-05
 
 ### Changed
