@@ -10,7 +10,7 @@
 //! Add to your `Cargo.toml`:
 //!
 //! ```toml
-//! async-mailer = "0.4.1"
+//! async-mailer = "0.4.2"
 //! ```
 //!
 //! You can control the re-exported mailer implementations,
