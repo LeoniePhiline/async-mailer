@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+## [0.3.2] - 2024-04-05
+
 ### Added
 
 - Add missing crate metadata `categories` and `keywords`.
@@ -80,7 +82,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.3.1...HEAD
+[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.3.2...HEAD
+[0.3.2]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.3.1...async-mailer-outlook-v0.3.2
 [0.3.1]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.3.0...async-mailer-outlook-v0.3.1
 [0.3.0]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.2.3...async-mailer-outlook-v0.3.0
 [0.2.3]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-outlook-v0.2.2...async-mailer-outlook-v0.2.3
