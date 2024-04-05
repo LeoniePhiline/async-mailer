@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+## [0.4.1] - 2024-04-05
+
 ## [0.4.0] - 2023-10-24
 
 ### Fixed
@@ -106,7 +108,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/LeoniePhiline/async-mailer/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.5...v0.4.0
 [0.3.5]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/LeoniePhiline/async-mailer/compare/v0.3.3...v0.3.4
