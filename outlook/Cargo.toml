@@ -15,7 +15,7 @@ tracing = ["dep:tracing"]
 
 [dependencies]
 async-mailer-core = { path = "../core", version = "0.3" }
-async-trait = "0.1.79"
+async-trait = "0.1.80"
 base64 = "0.22.0"
 reqwest = { version = "0.12.3", default-features = false, features = ["rustls-tls", "charset", "http2", "macos-system-configuration", "gzip", "brotli"] }
 secrecy = "0.8.0"
