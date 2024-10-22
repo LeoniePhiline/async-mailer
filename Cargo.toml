@@ -24,4 +24,4 @@ tracing = ["async-mailer-core/tracing", "async-mailer-outlook?/tracing", "async-
 async-mailer-core = { path = "core", version = "0.3" }
 async-mailer-outlook = { optional = true, path = "outlook", version = "0.3" }
 async-mailer-smtp = { optional = true, path = "smtp", version = "0.3" }
-secrecy = "0.8.0"
+secrecy = "0.10.0"

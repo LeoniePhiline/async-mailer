@@ -38,7 +38,7 @@ use async_mailer::{IntoMessage, Mailer, OutlookMailer, SmtpMailer};
 let mailer: OutlookMailer = OutlookMailer::new(
     "<Microsoft Identity service tenant>".into(),
     "<OAuth2 app GUID>".into(),
-    async_mailer::Secret::new("<OAuth2 app secret>".into())
+    async_mailer::SecretString::from("<OAuth2 app secret>")
 ).await?;
 
 // Alternative:
@@ -48,7 +48,7 @@ let mailer: SmtpMailer = SmtpMailer::new(
     465,
     async_mailer::SmtpInvalidCertsPolicy::Deny,
     "<username>".into(),
-    async_mailer::Secret::new("<password>".into())
+    async_mailer::SecretString::from("<password>")
 );
 
 // Further alternative mailers can be implemented by third parties.
@@ -81,7 +81,7 @@ use async_mailer::{BoxMailer, IntoMessage, OutlookMailer, SmtpMailer};
 let mailer: BoxMailer = OutlookMailer::new_box( // Or `OutlookMailer::new_arc()`.
     "<Microsoft Identity service tenant>".into(),
     "<OAuth2 app GUID>".into(),
-    async_mailer::Secret::new("<OAuth2 app secret>".into())
+    async_mailer::SecretString::from("<OAuth2 app secret>")
 ).await?;
 
 // Alternative:
@@ -91,7 +91,7 @@ let mailer: BoxMailer = SmtpMailer::new_box( // Or `SmtpMailer::new_arc()`.
     465,
     async_mailer::SmtpInvalidCertsPolicy::Deny,
     "<username>".into(),
-    async_mailer::Secret::new("<password>".into())
+    async_mailer::SecretString::from("<password>")
 );
 
 // Further alternative mailers can be implemented by third parties.

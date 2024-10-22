@@ -20,7 +20,7 @@
 //! let mailer = OutlookMailer::new(
 //!     "<Microsoft Identity service tenant>".into(),
 //!     "<OAuth2 app GUID>".into(),
-//!     secrecy::Secret::new("<OAuth2 app secret>".into())
+//!     secrecy::SecretString::from("<OAuth2 app secret>")
 //! ).await?;
 //!
 //! // An alternative `SmtpMailer` can be found at `async-mailer-smtp`.
@@ -61,7 +61,7 @@
 //! let mailer: BoxMailer = OutlookMailer::new_box( // Or `OUtlookMailer::new_arc()`.
 //!     "<Microsoft Identity service tenant>".into(),
 //!     "<OAuth2 app GUID>".into(),
-//!     secrecy::Secret::new("<OAuth2 app secret>".into())
+//!     secrecy::SecretString::from("<OAuth2 app secret>")
 //! ).await?;
 //!
 //! // An alternative `SmtpMailer` can be found at `async-mailer-smtp`.
@@ -105,7 +105,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use base64::{engine::general_purpose::STANDARD as base64_engine, Engine as _};
 use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE};
-use secrecy::{ExposeSecret, Secret};
+use secrecy::{ExposeSecret, SecretString};
 use serde::Deserialize;
 
 #[cfg(feature = "tracing")]
@@ -160,7 +160,7 @@ pub enum OutlookAccessTokenError {
 #[derive(Clone, Debug)]
 pub struct OutlookMailer {
     http_client: reqwest::Client,
-    access_token: Secret<String>,
+    access_token: SecretString,
 }
 
 impl OutlookMailer {
@@ -178,7 +178,7 @@ impl OutlookMailer {
     pub async fn new(
         tenant: String,
         app_guid: String,
-        secret: Secret<String>,
+        secret: SecretString,
     ) -> Result<Self, OutlookMailerError> {
         let http_client = reqwest::Client::new();
 
@@ -206,7 +206,7 @@ impl OutlookMailer {
     pub async fn new_box(
         tenant: String,
         app_guid: String,
-        secret: Secret<String>,
+        secret: SecretString,
     ) -> Result<BoxMailer, OutlookMailerError> {
         Ok(Box::new(Self::new(tenant, app_guid, secret).await?))
     }
@@ -225,7 +225,7 @@ impl OutlookMailer {
     pub async fn new_arc(
         tenant: String,
         app_guid: String,
-        secret: Secret<String>,
+        secret: SecretString,
     ) -> Result<ArcMailer, OutlookMailerError> {
         Ok(Arc::new(Self::new(tenant, app_guid, secret).await?))
     }
@@ -243,9 +243,9 @@ impl OutlookMailer {
     async fn get_access_token(
         tenant_id: &str,
         client_id: &str,
-        client_secret: &Secret<String>,
+        client_secret: &SecretString,
         http_client: reqwest::Client,
-    ) -> Result<Secret<String>, OutlookAccessTokenError> {
+    ) -> Result<SecretString, OutlookAccessTokenError> {
         let token_url = format!("https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token");
 
         let form_data = [
@@ -270,7 +270,7 @@ impl OutlookMailer {
         let token_response: TokenResponse = serde_json::from_slice(&response_data)
             .map_err(OutlookAccessTokenError::ParseResponse)?;
 
-        Ok(Secret::from(token_response.access_token))
+        Ok(SecretString::from(token_response.access_token))
     }
 }
 

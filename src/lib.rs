@@ -39,7 +39,7 @@
 //! let mailer: OutlookMailer = OutlookMailer::new(
 //!     "<Microsoft Identity service tenant>".into(),
 //!     "<OAuth2 app GUID>".into(),
-//!     async_mailer::Secret::new("<OAuth2 app secret>".into())
+//!     async_mailer::SecretString::from("<OAuth2 app secret>")
 //! ).await?;
 //!
 //! // Alternative:
@@ -49,7 +49,7 @@
 //!     465,
 //!     async_mailer::SmtpInvalidCertsPolicy::Deny,
 //!     "<username>".into(),
-//!     async_mailer::Secret::new("<password>".into())
+//!     async_mailer::SecretString::from("<password>")
 //! );
 //!
 //! // Further alternative mailers can be implemented by third parties.
@@ -85,7 +85,7 @@
 //! let mailer: BoxMailer = OutlookMailer::new_box( // Or `OutlookMailer::new_arc()`.
 //!     "<Microsoft Identity service tenant>".into(),
 //!     "<OAuth2 app GUID>".into(),
-//!     async_mailer::Secret::new("<OAuth2 app secret>".into())
+//!     async_mailer::SecretString::from("<OAuth2 app secret>")
 //! ).await?;
 //!
 //! // Alternative:
@@ -95,7 +95,7 @@
 //!     465,
 //!     async_mailer::SmtpInvalidCertsPolicy::Deny,
 //!     "<username>".into(),
-//!     async_mailer::Secret::new("<password>".into())
+//!     async_mailer::SecretString::from("<password>")
 //! );
 //!
 //! // Further alternative mailers can be implemented by third parties.
@@ -142,7 +142,7 @@
 //!
 //! [docs]: https://docs.rs/async-mailer
 
-pub use secrecy::Secret;
+pub use secrecy::SecretString;
 
 pub use async_mailer_core::mail_send;
 pub use async_mailer_core::mail_send::mail_builder;

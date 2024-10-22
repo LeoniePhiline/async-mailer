@@ -26,7 +26,7 @@
 //!     465,
 //!     SmtpInvalidCertsPolicy::Deny,
 //!     "<username>".into(),
-//!     secrecy::Secret::new("<password>".into())
+//!     secrecy::SecretString::from("<password>")
 //! );
 //!
 //! // An alternative `OutlookMailer` can be found at `async-mailer-outlook`.
@@ -69,7 +69,7 @@
 //!     465,
 //!     SmtpInvalidCertsPolicy::Deny,
 //!     "<username>".into(),
-//!     secrecy::Secret::new("<password>".into())
+//!     secrecy::SecretString::from("<password>")
 //! );
 //!
 //! // An alternative `OutlookMailer` can be found at `async-mailer-outlook`.
@@ -118,7 +118,7 @@ use async_trait::async_trait;
 #[cfg(feature = "clap")]
 use clap;
 
-use secrecy::{ExposeSecret, Secret};
+use secrecy::{ExposeSecret, SecretString};
 
 #[cfg(feature = "tracing")]
 use tracing::{error, info, instrument};
@@ -186,7 +186,7 @@ impl SmtpMailer {
         port: u16,
         invalid_certs: SmtpInvalidCertsPolicy,
         user: String,
-        password: Secret<String>,
+        password: SecretString,
     ) -> Self {
         let mut smtp_client = SmtpClientBuilder::new(host, port)
             .credentials((user, password.expose_secret().into()))
@@ -206,7 +206,7 @@ impl SmtpMailer {
         port: u16,
         invalid_certs: SmtpInvalidCertsPolicy,
         user: String,
-        password: Secret<String>,
+        password: SecretString,
     ) -> BoxMailer {
         Box::new(Self::new(host, port, invalid_certs, user, password))
     }
@@ -218,7 +218,7 @@ impl SmtpMailer {
         port: u16,
         invalid_certs: SmtpInvalidCertsPolicy,
         user: String,
-        password: Secret<String>,
+        password: SecretString,
     ) -> ArcMailer {
         Arc::new(Self::new(host, port, invalid_certs, user, password))
     }
