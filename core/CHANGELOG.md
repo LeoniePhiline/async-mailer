@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+## [0.3.4] - 2024-10-22
+
 ### Changed
 
 - Remove unused dependency `secrecy`.
@@ -76,7 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.3.3...HEAD
+[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.3.4...HEAD
+[0.3.4]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.3.3...async-mailer-core-v0.3.4
 [0.3.3]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.3.2...async-mailer-core-v0.3.3
 [0.3.2]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.3.1...async-mailer-core-v0.3.2
 [0.3.1]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-core-v0.3.0...async-mailer-core-v0.3.1
