@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### BREAKING CHANGES
+
+- Update public dependency `secrecy` to v0.10.
+
 ## [0.3.2] - 2024-04-05
 
 ### Added
