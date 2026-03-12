@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### BREAKING CHANGES
+
+- Update re-exported dependency `async-mailer-core` to v0.4,
+  updating re-exported dependency `mail-send` to v0.5,
+  and updating transitively re-exported dependency
+  [`mail-builder` to v0.4](https://github.com/stalwartlabs/mail-builder/compare/v0.3.1...v0.4.0).
+
+### Changed
+
+- `async-mailer-outlook` was updated to `reqwest` v0.13,
+  and support for `zstd` compression enabled.
+
 ## [0.5.0] - 2024-10-22
 
 ### BREAKING CHANGES
