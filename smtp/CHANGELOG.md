@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+## [0.5.0] - 2026-03-12
+
 ### BREAKING CHANGES
 
 - Update `async-mailer-core`, which updates re-exported dependency `mail-send` to v0.5,
@@ -98,7 +100,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-smtp-v0.4.1...HEAD
+[Unreleased]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-smtp-v0.5.0...HEAD
+[0.5.0]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-smtp-v0.4.1...async-mailer-smtp-v0.5.0
 [0.4.1]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-smtp-v0.4.0...async-mailer-smtp-v0.4.1
 [0.4.0]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-smtp-v0.3.2...async-mailer-smtp-v0.4.0
 [0.3.2]: https://github.com/LeoniePhiline/async-mailer/compare/async-mailer-smtp-v0.3.1...async-mailer-smtp-v0.3.2
