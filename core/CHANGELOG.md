@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   updating transitively re-exported dependency
   [`mail-builder` to v0.4](https://github.com/stalwartlabs/mail-builder/compare/v0.3.1...v0.4.0).
 
+### Changed
+
+- Update `thiserror` to v2.
+
 ## [0.3.4] - 2024-10-22
 
 ### Changed
