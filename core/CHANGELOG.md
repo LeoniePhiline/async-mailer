@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### BREAKING CHANGES
+
+- Update re-exported dependency `mail-send` to v0.5,
+  updating transitively re-exported dependency
+  [`mail-builder` to v0.4](https://github.com/stalwartlabs/mail-builder/compare/v0.3.1...v0.4.0).
+
 ## [0.3.4] - 2024-10-22
 
 ### Changed
