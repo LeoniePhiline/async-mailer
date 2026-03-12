@@ -21,7 +21,7 @@ clap = ["async-mailer-smtp?/clap"]
 tracing = ["async-mailer-core/tracing", "async-mailer-outlook?/tracing", "async-mailer-smtp?/tracing"]
 
 [dependencies]
-async-mailer-core = { path = "core", version = "0.3" }
+async-mailer-core = { path = "core", version = "0.4" }
 async-mailer-outlook = { optional = true, path = "outlook", version = "0.4" }
 async-mailer-smtp = { optional = true, path = "smtp", version = "0.4" }
 secrecy = "0.10"
