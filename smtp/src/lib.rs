@@ -27,7 +27,7 @@
 //!     SmtpInvalidCertsPolicy::Deny,
 //!     "<username>".into(),
 //!     secrecy::SecretString::from("<password>")
-//! );
+//! )?;
 //!
 //! // An alternative `OutlookMailer` can be found at `async-mailer-outlook`.
 //! // Further alternative mailers can be implemented by third parties.
@@ -70,7 +70,7 @@
 //!     SmtpInvalidCertsPolicy::Deny,
 //!     "<username>".into(),
 //!     secrecy::SecretString::from("<password>")
-//! );
+//! )?;
 //!
 //! // An alternative `OutlookMailer` can be found at `async-mailer-outlook`.
 //! // Further alternative mailers can be implemented by third parties.
@@ -129,6 +129,10 @@ use async_mailer_core::{util, ArcMailer, BoxMailer, DynMailer, DynMailerError, M
 /// Error returned by [`SmtpMailer::new`] and [`SmtpMailer::send_mail`].
 #[derive(Debug, thiserror::Error)]
 pub enum SmtpMailerError {
+    /// Failed to build the SMTP client.
+    #[error("failed to build SMTP client: {0}")]
+    Build(String),
+
     /// Could not connect to SMTP host.
     #[error("could not connect to SMTP host: {0}")]
     Connect(mail_send::Error),
@@ -180,6 +184,11 @@ impl std::fmt::Debug for SmtpMailer {
 
 impl SmtpMailer {
     /// Create a new SMTP mailer client.
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`SmtpMailerError::Build`] error
+    /// if the SMTP client cannot be built.
     #[cfg_attr(feature = "tracing", instrument)]
     pub fn new(
         host: String,
@@ -187,8 +196,9 @@ impl SmtpMailer {
         invalid_certs: SmtpInvalidCertsPolicy,
         user: String,
         password: SecretString,
-    ) -> Self {
+    ) -> Result<Self, SmtpMailerError> {
         let mut smtp_client = SmtpClientBuilder::new(host, port)
+            .map_err(SmtpMailerError::Build)?
             .credentials((user, password.expose_secret().into()))
             .timeout(Duration::from_secs(30));
 
@@ -196,10 +206,15 @@ impl SmtpMailer {
             smtp_client = smtp_client.allow_invalid_certs();
         }
 
-        Self { inner: smtp_client }
+        Ok(Self { inner: smtp_client })
     }
 
     /// Create a new SMTP mailer client as dynamic `async_mailer::BoxMailer`.
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`SmtpMailerError::Build`] error
+    /// if the SMTP client cannot be built.
     #[cfg_attr(feature = "tracing", instrument)]
     pub fn new_box(
         host: String,
@@ -207,11 +222,22 @@ impl SmtpMailer {
         invalid_certs: SmtpInvalidCertsPolicy,
         user: String,
         password: SecretString,
-    ) -> BoxMailer {
-        Box::new(Self::new(host, port, invalid_certs, user, password))
+    ) -> Result<BoxMailer, SmtpMailerError> {
+        Ok(Box::new(Self::new(
+            host,
+            port,
+            invalid_certs,
+            user,
+            password,
+        )?))
     }
 
     /// Create a new SMTP mailer client as dynamic `async_mailer::ArcMailer`.
+    ///
+    /// # Errors
+    ///
+    /// Returns a [`SmtpMailerError::Build`] error
+    /// if the SMTP client cannot be built.
     #[cfg_attr(feature = "tracing", instrument)]
     pub fn new_arc(
         host: String,
@@ -219,8 +245,14 @@ impl SmtpMailer {
         invalid_certs: SmtpInvalidCertsPolicy,
         user: String,
         password: SecretString,
-    ) -> ArcMailer {
-        Arc::new(Self::new(host, port, invalid_certs, user, password))
+    ) -> Result<ArcMailer, SmtpMailerError> {
+        Ok(Arc::new(Self::new(
+            host,
+            port,
+            invalid_certs,
+            user,
+            password,
+        )?))
     }
 }
 

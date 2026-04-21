@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### BREAKING CHANGES
+
+- Update re-exported dependency `async-mailer-smtp`,
+  which updates re-exported dependency `mail-send` from v0.5 to v0.6.0.
+  `SmtpClientBuilder::new` now returns `Result<Self, String>` instead of `Self`,
+  because building the TLS connector can fail.
+  Consequently, [`SmtpMailer::new`] now returns `Result<Self, SmtpMailerError>`,
+  [`SmtpMailer::new_box`] returns `Result<BoxMailer, SmtpMailerError>`,
+  and [`SmtpMailer::new_arc`] returns `Result<ArcMailer, SmtpMailerError>`.
+  A new `SmtpMailerError::Build` variant is returned when `SmtpClientBuilder::new` fails.
+
 ### Fixed
 
 - Error enum variants in `SmtpMailerError`, `OutlookMailerError`, and `OutlookAccessTokenError`
@@ -19,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### BREAKING CHANGES
 
 - Update re-exported dependency `async-mailer-core` to v0.4,
-  updating re-exported dependency `mail-send` to v0.5,
+  updating re-exported dependency `mail-send` from v0.4 to v0.5,
   and updating transitively re-exported dependency
   [`mail-builder` to v0.4](https://github.com/stalwartlabs/mail-builder/compare/v0.3.1...v0.4.0).
 
