@@ -122,7 +122,9 @@ pub enum OutlookMailerError {
     RetrieveAccessToken(#[from] OutlookAccessTokenError),
 
     /// Failed request attempting to send Outlook MIME mail through Microsoft Graph API.
-    #[error("failed request attempting to send Outlook MIME mail through Microsoft Graph API: {0}")]
+    #[error(
+        "failed request attempting to send Outlook MIME mail through Microsoft Graph API: {0}"
+    )]
     SendMailRequest(reqwest::Error),
 
     /// Failed sending Outlook MIME mail through Microsoft Graph API.
