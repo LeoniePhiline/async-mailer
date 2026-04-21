@@ -118,21 +118,21 @@ use async_mailer_core::{util, ArcMailer, BoxMailer, DynMailer, DynMailerError, M
 #[derive(Debug, thiserror::Error)]
 pub enum OutlookMailerError {
     /// Failed to retrieve Microsoft Graph API access token.
-    #[error("failed to retrieve Microsoft Graph API access token")]
+    #[error("failed to retrieve Microsoft Graph API access token: {0}")]
     RetrieveAccessToken(#[from] OutlookAccessTokenError),
 
     /// Failed request attempting to send Outlook MIME mail through Microsoft Graph API.
-    #[error("failed request attempting to send Outlook MIME mail through Microsoft Graph API")]
+    #[error("failed request attempting to send Outlook MIME mail through Microsoft Graph API: {0}")]
     SendMailRequest(reqwest::Error),
 
     /// Failed sending Outlook MIME mail through Microsoft Graph API.
-    #[error("failed sending Outlook MIME mail through Microsoft Graph API")]
+    #[error("failed sending Outlook MIME mail through Microsoft Graph API: {0}")]
     SendMailResponse(reqwest::Error),
 
     /// Failed retrieving response body from Microsoft Graph API.
     /// (Crate feature `tracing` only.)
     #[cfg(feature = "tracing")]
-    #[error("failed retrieving response body from Microsoft Graph API")]
+    #[error("failed retrieving response body from Microsoft Graph API: {0}")]
     SendMailResponseBody(reqwest::Error),
 }
 
@@ -140,15 +140,15 @@ pub enum OutlookMailerError {
 #[derive(Debug, thiserror::Error)]
 pub enum OutlookAccessTokenError {
     /// Failed sending OAuth2 client credentials grant access token request to Microsoft Identity service.
-    #[error("failed sending OAuth2 client credentials grant access token request to Microsoft Identity service")]
+    #[error("failed sending OAuth2 client credentials grant access token request to Microsoft Identity service: {0}")]
     SendRequest(reqwest::Error),
 
     /// Failed receiving OAuth2 client credentials grant access token response from Microsoft Identity service.
-    #[error("failed receiving OAuth2 client credentials grant access token response from Microsoft Identity service")]
+    #[error("failed receiving OAuth2 client credentials grant access token response from Microsoft Identity service: {0}")]
     ReceiveResponse(reqwest::Error),
 
     /// Failed to parse OAuth2 client credentials grant access token response from Microsoft Identity service.
-    #[error("failed to parse OAuth2 client credentials grant access token response from Microsoft Identity service")]
+    #[error("failed to parse OAuth2 client credentials grant access token response from Microsoft Identity service: {0}")]
     ParseResponse(serde_json::Error),
 }
 
