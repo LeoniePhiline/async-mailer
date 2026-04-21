@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] <!-- release-date -->
 
+### Fixed
+
+- Error enum variants in `OutlookMailerError` (`RetrieveAccessToken`, `SendMailRequest`,
+  `SendMailResponse`, `SendMailResponseBody`) and `OutlookAccessTokenError` (`SendRequest`,
+  `ReceiveResponse`, `ParseResponse`) now include the wrapped error in their `Display` output
+  via `: {0}`.
+
 ## [0.5.0] - 2026-03-12
 
 ### BREAKING CHANGES
