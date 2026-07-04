@@ -130,12 +130,12 @@ use async_mailer_core::{util, ArcMailer, BoxMailer, DynMailer, DynMailerError, M
 #[derive(Debug, thiserror::Error)]
 pub enum SmtpMailerError {
     /// Could not connect to SMTP host.
-    #[error("could not connect to SMTP host")]
-    Connect(mail_send::Error),
+    #[error("could not connect to SMTP host: {0}")]
+    Connect(#[source] mail_send::Error),
 
     /// Could not send SMTP mail.
-    #[error("could not send SMTP mail")]
-    Send(mail_send::Error),
+    #[error("could not send SMTP mail: {0}")]
+    Send(#[source] mail_send::Error),
 }
 
 /// Pass to [`SmtpMailer::new`] to either allow or deny invalid SMTP certificates.
