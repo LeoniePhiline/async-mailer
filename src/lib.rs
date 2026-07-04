@@ -50,7 +50,7 @@
 //!     async_mailer::SmtpInvalidCertsPolicy::Deny,
 //!     "<username>".into(),
 //!     async_mailer::SecretString::from("<password>")
-//! );
+//! )?;
 //!
 //! // Further alternative mailers can be implemented by third parties.
 //!
@@ -96,7 +96,7 @@
 //!     async_mailer::SmtpInvalidCertsPolicy::Deny,
 //!     "<username>".into(),
 //!     async_mailer::SecretString::from("<password>")
-//! );
+//! )?;
 //!
 //! // Further alternative mailers can be implemented by third parties.
 //!

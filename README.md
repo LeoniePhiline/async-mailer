@@ -49,7 +49,7 @@ let mailer: SmtpMailer = SmtpMailer::new(
     async_mailer::SmtpInvalidCertsPolicy::Deny,
     "<username>".into(),
     async_mailer::SecretString::from("<password>")
-);
+)?;
 
 // Further alternative mailers can be implemented by third parties.
 
@@ -92,7 +92,7 @@ let mailer: BoxMailer = SmtpMailer::new_box( // Or `SmtpMailer::new_arc()`.
     async_mailer::SmtpInvalidCertsPolicy::Deny,
     "<username>".into(),
     async_mailer::SecretString::from("<password>")
-);
+)?;
 
 // Further alternative mailers can be implemented by third parties.
 
