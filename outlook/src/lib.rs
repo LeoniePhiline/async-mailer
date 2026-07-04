@@ -118,38 +118,40 @@ use async_mailer_core::{util, ArcMailer, BoxMailer, DynMailer, DynMailerError, M
 #[derive(Debug, thiserror::Error)]
 pub enum OutlookMailerError {
     /// Failed to retrieve Microsoft Graph API access token.
-    #[error("failed to retrieve Microsoft Graph API access token")]
+    #[error("failed to retrieve Microsoft Graph API access token: {0}")]
     RetrieveAccessToken(#[from] OutlookAccessTokenError),
 
     /// Failed request attempting to send Outlook MIME mail through Microsoft Graph API.
-    #[error("failed request attempting to send Outlook MIME mail through Microsoft Graph API")]
-    SendMailRequest(reqwest::Error),
+    #[error(
+        "failed request attempting to send Outlook MIME mail through Microsoft Graph API: {0}"
+    )]
+    SendMailRequest(#[source] reqwest::Error),
 
     /// Failed sending Outlook MIME mail through Microsoft Graph API.
-    #[error("failed sending Outlook MIME mail through Microsoft Graph API")]
-    SendMailResponse(reqwest::Error),
+    #[error("failed sending Outlook MIME mail through Microsoft Graph API: {0}")]
+    SendMailResponse(#[source] reqwest::Error),
 
     /// Failed retrieving response body from Microsoft Graph API.
     /// (Crate feature `tracing` only.)
     #[cfg(feature = "tracing")]
-    #[error("failed retrieving response body from Microsoft Graph API")]
-    SendMailResponseBody(reqwest::Error),
+    #[error("failed retrieving response body from Microsoft Graph API: {0}")]
+    SendMailResponseBody(#[source] reqwest::Error),
 }
 
 /// Error returned by [`OutlookMailer::new`] if an access token cannot be retrieved.
 #[derive(Debug, thiserror::Error)]
 pub enum OutlookAccessTokenError {
     /// Failed sending OAuth2 client credentials grant access token request to Microsoft Identity service.
-    #[error("failed sending OAuth2 client credentials grant access token request to Microsoft Identity service")]
-    SendRequest(reqwest::Error),
+    #[error("failed sending OAuth2 client credentials grant access token request to Microsoft Identity service: {0}")]
+    SendRequest(#[source] reqwest::Error),
 
     /// Failed receiving OAuth2 client credentials grant access token response from Microsoft Identity service.
-    #[error("failed receiving OAuth2 client credentials grant access token response from Microsoft Identity service")]
-    ReceiveResponse(reqwest::Error),
+    #[error("failed receiving OAuth2 client credentials grant access token response from Microsoft Identity service: {0}")]
+    ReceiveResponse(#[source] reqwest::Error),
 
     /// Failed to parse OAuth2 client credentials grant access token response from Microsoft Identity service.
-    #[error("failed to parse OAuth2 client credentials grant access token response from Microsoft Identity service")]
-    ParseResponse(serde_json::Error),
+    #[error("failed to parse OAuth2 client credentials grant access token response from Microsoft Identity service: {0}")]
+    ParseResponse(#[source] serde_json::Error),
 }
 
 /// An Outlook mailer client, implementing the [`async_mailer_core::Mailer`](https://docs.rs/async-mailer/latest/async_mailer/trait.Mailer.html)
